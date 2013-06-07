@@ -28,13 +28,18 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.FunctionalTests
         private string userName;
         private string password;
         private string manageUrl;
+        private string serverLocation;
+        private string subscriptionId;
+        private string serializedCert;
+        private string blobContainerUri;
+        private string accessKey;
 
         private const string CreateContextScript = @"Database\CreateContext.ps1";
         private const string CreateScript = @"Database\CreateAndGetDatabase.ps1";
         private const string UpdateScript = @"Database\UpdateDatabase.ps1";
         private const string DeleteScript = @"Database\DeleteDatabase.ps1";
         private const string FormatValidationScript = @"Database\FormatValidation.ps1";
-        private const string ExportScript = @"Database\ExportDatabase.ps1";
+        private const string ImportExportScript = @"Database\ImportExportDatabase.ps1";
 
         [TestInitialize]
         public void Setup()
@@ -43,6 +48,11 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.FunctionalTests
             this.userName = root.Element("SqlAuthUserName").Value;
             this.password = root.Element("SqlAuthPassword").Value;
             this.manageUrl = root.Element("ManageUrl").Value;
+            this.serverLocation = root.Element("ServerLocation").Value;
+            this.subscriptionId = root.Element("SubscriptionId").Value;
+            this.serializedCert = root.Element("SerializedCert").Value;
+            this.blobContainerUri = root.Element("BlobContainerUri").Value;
+            this.accessKey = root.Element("AccessKey").Value;
         }
 
         [TestMethod]
@@ -123,6 +133,26 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.FunctionalTests
             Assert.IsTrue(testResult);
 
             OutputFormatValidator.ValidateOutputFormat(outputFile, @"Database\ExpectedFormat.txt");
+        }
+
+        [TestMethod]
+        [TestCategory("Functional")]
+        public void ImportExportDatabase()
+        {
+            string outputFile = Path.Combine(Directory.GetCurrentDirectory(), Guid.NewGuid() + ".txt");
+            string arguments = string.Format(
+                CultureInfo.InvariantCulture,
+                "-UserName \"{0}\" -Password \"{1}\" -SubscriptionId \"{2}\" -SerializedCert \"{3}\" "
+                + "-BlobContainerUri \"{4}\" -StorageAccessKey \"{5}\" -ServerLocation \"{6}\"",
+                this.userName,
+                this.password,
+                this.subscriptionId,
+                this.serializedCert,
+                this.blobContainerUri,
+                this.accessKey, 
+                this.serverLocation);
+            bool testResult = PSScriptExecutor.ExecuteScript(DatabaseTest.ImportExportScript, arguments);
+            Assert.IsTrue(testResult);
         }
     }
 }
