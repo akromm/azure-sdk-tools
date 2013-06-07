@@ -34,6 +34,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.FunctionalTests
         private const string UpdateScript = @"Database\UpdateDatabase.ps1";
         private const string DeleteScript = @"Database\DeleteDatabase.ps1";
         private const string FormatValidationScript = @"Database\FormatValidation.ps1";
+        private const string ExportScript = @"Database\ExportDatabase.ps1";
 
         [TestInitialize]
         public void Setup()
