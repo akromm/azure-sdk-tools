@@ -21,10 +21,10 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Database.
     using Microsoft.WindowsAzure.Management.Utilities.Common;
 
     /// <summary>
-    /// Test class for testing the Export-AzureSqlDatabase cmdlet
+    /// Test class for testing the Import-AzureSqlDatabase cmdlet
     /// </summary>
     [TestClass]
-    public class ExportAzureSqlDatabaseTests : TestBase
+    public class ImportAzureSqlDatabaseTests : TestBase
     {
         /// <summary>
         /// Initializes the test environment
@@ -36,14 +36,16 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Database.
         }
 
         /// <summary>
-        /// Tests the ExportAzureSqlDatabaseProcess function 
+        /// Tests the ImportAzureSqlDatabaseProcess function 
         /// </summary>
         [TestMethod]
-        public void ExportAzureSqlDatabaseProcessTest()
+        public void ImportAzureSqlDatabaseProcessTest()
         {
             string serverName = "TestServer";
-            ExportInput input = new ExportInput()
+            ImportInput input = new ImportInput()
             {
+                AzureEdition = "Web",
+                DatabaseSizeInGB = 1,
                 BlobCredentials = new BlobStorageAccessKeyCredentials()
                 {
                     Uri = "blobUri",
@@ -60,24 +62,30 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Database.
 
             MockCommandRuntime commandRuntime = new MockCommandRuntime();
             SimpleSqlDatabaseManagement channel = new SimpleSqlDatabaseManagement();
-            channel.ExportDatabaseThunk = ar =>
+            channel.ImportDatabaseThunk = ar =>
             {
                 Assert.AreEqual(serverName, (string)ar.Values["serverName"]);
                 Assert.AreEqual(
-                    input.BlobCredentials.Uri, 
-                    ((ExportInput)ar.Values["input"]).BlobCredentials.Uri);
+                    input.AzureEdition,
+                    ((ImportInput)ar.Values["input"]).AzureEdition);
                 Assert.AreEqual(
-                    input.ConnectionInfo.DatabaseName, 
-                    ((ExportInput)ar.Values["input"]).ConnectionInfo.DatabaseName);
+                    input.DatabaseSizeInGB,
+                    ((ImportInput)ar.Values["input"]).DatabaseSizeInGB);
+                Assert.AreEqual(
+                    input.BlobCredentials.Uri,
+                    ((ImportInput)ar.Values["input"]).BlobCredentials.Uri);
+                Assert.AreEqual(
+                    input.ConnectionInfo.DatabaseName,
+                    ((ImportInput)ar.Values["input"]).ConnectionInfo.DatabaseName);
                 Assert.AreEqual(
                     input.ConnectionInfo.Password,
-                    ((ExportInput)ar.Values["input"]).ConnectionInfo.Password);
+                    ((ImportInput)ar.Values["input"]).ConnectionInfo.Password);
                 Assert.AreEqual(
                     input.ConnectionInfo.ServerName,
-                    ((ExportInput)ar.Values["input"]).ConnectionInfo.ServerName);
+                    ((ImportInput)ar.Values["input"]).ConnectionInfo.ServerName);
                 Assert.AreEqual(
-                    input.ConnectionInfo.UserName, 
-                    ((ExportInput)ar.Values["input"]).ConnectionInfo.UserName);
+                    input.ConnectionInfo.UserName,
+                    ((ImportInput)ar.Values["input"]).ConnectionInfo.UserName);
                 
                 XmlElement operationResult = 
                     new XmlDocument().CreateElement(
@@ -88,11 +96,11 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Database.
                 return operationResult;
             };
 
-            ExportAzureSqlDatabase exportAzureSqlDatabase = 
-                new ExportAzureSqlDatabase(channel) { ShareChannel = true };
-            exportAzureSqlDatabase.CurrentSubscription = UnitTestHelper.CreateUnitTestSubscription();
-            exportAzureSqlDatabase.CommandRuntime = commandRuntime;
-            var result = exportAzureSqlDatabase.ExportSqlAzureDatabaseProcess(serverName, input);
+            ImportAzureSqlDatabase importAzureSqlDatabase =
+                new ImportAzureSqlDatabase(channel) { ShareChannel = true };
+            importAzureSqlDatabase.CurrentSubscription = UnitTestHelper.CreateUnitTestSubscription();
+            importAzureSqlDatabase.CommandRuntime = commandRuntime;
+            var result = importAzureSqlDatabase.ImportSqlAzureDatabaseProcess(serverName, input);
             Assert.AreEqual("00000000-0000-0000-0000-000000000000", result.InnerText);
 
             Assert.AreEqual(0, commandRuntime.ErrorStream.Count);

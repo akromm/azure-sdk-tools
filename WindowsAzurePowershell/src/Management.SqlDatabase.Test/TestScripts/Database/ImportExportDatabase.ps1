@@ -58,7 +58,7 @@ Write-Output "`$StorageAccessKey=$StorageAccessKey"
 
 $ManageUrlPrefix = "https://"
 $ManageUrlPostfix = ".database.windows.net/"
-
+$DatabaseNamePrefix = "ImportExportDatabase"
 Try
 {
     ####################################################
@@ -78,7 +78,7 @@ Try
     $context = Get-ServerContextByManageUrlWithSqlAuth -ManageUrl $ManageUrl -UserName $UserName `
         -Password $Password
 
-    $DatabaseName = "testExportDatabase"
+    $DatabaseName = $DatabaseNamePrefix + "1"
     
     Write-Output "Creating Database $DatabaseName ..."
     $database = New-AzureSqlDatabase -Context $context -DatabaseName $DatabaseName
@@ -94,7 +94,20 @@ Try
         $server.ServerName -DatabaseName $DatabaseName -BlobUri $BlobUri -StorageKey $StorageAccessKey
     Assert {$requestId} "Failed to initiate the export opertaion"
     Write-Output "Request Id for export: " + $requestId
+	
+    ####################################################
+    # Import Database
+	$BlobName = $DatabaseName + ".bacpac"
+    $BlobUri = BlobContainerUri + $BlobName
+	$NewDatabaseName = $DatabaseNamePrefix + "2"
 
+    $requestId = Import-AzureSqlDatabase -UserName $UserName -Password $Password -ServerName `
+        $server.ServerName -DatabaseName $NewDatabaseName -Edition Web -MaxSizeGb 1 -BlobUri $BlobUri `
+		-StorageKey $StorageAccessKey
+
+    Assert {$requestId} "Failed to initiate the import opertaion"
+    Write-Output "Request Id for import: " + $requestId
+	
     $IsTestPass = $True
 }
 Finally
@@ -102,7 +115,7 @@ Finally
     if($database)
     {
         # Drop Database
-        Drop-Database $Context $DatabaseName
+        Drop-Databases $Context $DatabaseNamePrefix
         Drop-Server $server
         $Container = $BlobContainerUri.Segments[-1].Trim('/')
         Write-Output "Container: " + $Container
