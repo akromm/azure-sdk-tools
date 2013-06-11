@@ -335,7 +335,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests
 
         #region Import/Export Database Status
 
-        public Func<SimpleServiceManagementAsyncResult, StatusInfo> GetImportExporStatusThunk { get; set; }
+        public Func<SimpleServiceManagementAsyncResult, ArrayOfStatusInfo> GetImportExporStatusThunk { get; set; }
         public IAsyncResult BeginGetImportExportStatus(
             string subscriptionId,
             string serverName,
@@ -357,7 +357,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests
             return result;
         }
 
-        public StatusInfo EndGetImportExportStatus(IAsyncResult asyncResult)
+        public ArrayOfStatusInfo EndGetImportExportStatus(IAsyncResult asyncResult)
         {
             if (GetImportExporStatusThunk != null)
             {
@@ -372,7 +372,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests
                 throw new NotImplementedException("ExportDatabaseThunk is not implemented!");
             }
 
-            return default(StatusInfo);
+            return default(ArrayOfStatusInfo);
         }
 
         #endregion

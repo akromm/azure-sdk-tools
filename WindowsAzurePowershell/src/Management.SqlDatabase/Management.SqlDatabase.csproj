@@ -187,6 +187,7 @@
     <Compile Include="Services\SqlDatabaseFirewallRule.cs" />
     <Compile Include="Services\SqlDatabaseFirewallRuleInput.cs" />
     <Compile Include="Services\SqlDatabaseFirewallRulesList.cs" />
+    <Compile Include="Services\ImportExport\ArrayOfStatusInfo.cs" />
     <Compile Include="Services\SqlDatabaseManagementError.cs" />
     <Compile Include="Services\SqlDatabaseManagementHelper.cs" />
     <Compile Include="Services\SqlDatabaseServer.cs" />
