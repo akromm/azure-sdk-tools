@@ -34,7 +34,11 @@ Param
     [Parameter(Mandatory=$true, Position=4)]
     [ValidateNotNullOrEmpty()]
     [Uri]
-    $BlobContainerUri,
+    $ContainerName,
+    [Parameter(Mandatory=$true, Position=4)]
+    [ValidateNotNullOrEmpty()]
+    [Uri]
+    $StorageName,
     [Parameter(Mandatory=$true, Position=5)]
     [ValidateNotNullOrEmpty()]
     [string]
@@ -51,14 +55,16 @@ Write-Output "`$UserName=$UserName"
 Write-Output "`$Password=$Password"
 Write-Output "`$SubscriptionId=$SubscriptionId"
 Write-Output "`$SerializedCert=$SerializedCert"
-Write-Output "`$BlobContainerUri=$BlobContainerUri"
+Write-Output "`$ContainerName=$ContainerName"
 Write-Output "`$StorageAccessKey=$StorageAccessKey"
+Write-Output "`$ServerLocation=$ServerLocation"
+    
 
 . .\CommonFunctions.ps1
 
 $ManageUrlPrefix = "https://"
 $ManageUrlPostfix = ".database.windows.net/"
-$DatabaseNamePrefix = "ImportExportDatabase"
+
 Try
 {
     ####################################################
@@ -72,55 +78,78 @@ Try
         $Password -Location $ServerLocation
     Assert {$server} "Failed to create a server"
     Write-Output "Server $($server.ServerName) created"
+
+	#set the firewall rules
+	New-AzureSqlDatabaseServerFirewallRule -ServerName $server.ServerName -RuleName "AllowAll" `
+		-StartIpAddress "0.0.0.0" -EndIpAddress "255.255.255.255"
     
     #create a context to connect to the server.
     $ManageUrl = $ManageUrlPrefix + $server.ServerName + $ManageUrlPostfix
     $context = Get-ServerContextByManageUrlWithSqlAuth -ManageUrl $ManageUrl -UserName $UserName `
         -Password $Password
-
-    $DatabaseName = $DatabaseNamePrefix + "1"
+		
+    $DatabaseName1 = "testExportDatabase" + (get-date).Ticks
     
-    Write-Output "Creating Database $DatabaseName ..."
-    $database = New-AzureSqlDatabase -Context $context -DatabaseName $DatabaseName
+    Write-Output "Creating Database $DatabaseName1 ..."
+    $database = New-AzureSqlDatabase -Context $context -DatabaseName $DatabaseName1
     Assert {$database} "Failed to create a database"
     Write-Output "Done"
+
+    $DatabaseName2 = "testExportDatabase2" + (get-date).Ticks
+    
+    Write-Output "Creating Database $DatabaseName2 ..."
+    $database2 = New-AzureSqlDatabase -Context $context -DatabaseName $DatabaseName2
+    Assert {$database2} "Failed to create a database"
+    Write-Output "Done"
+
+	$StgCtx = New-AzureStorageContext -StorageAccountName $StorageName -StorageAccountKey $StorageAccessKey
+	$container = Get-AzureStorageContainer -Name $ContainerName -Context $StgCtx
     
     ####################################################
     # Export Database
-    $BlobName = $DatabaseName + ".bacpac"
-    $BlobUri = BlobContainerUri + $BlobName
 
-    $requestId = Export-AzureSqlDatabase -UserName $UserName -Password $Password -ServerName `
-        $server.ServerName -DatabaseName $DatabaseName -BlobUri $BlobUri -StorageKey $StorageAccessKey
-    Assert {$requestId} "Failed to initiate the export opertaion"
-    Write-Output "Request Id for export: " + $requestId
-	
-    ####################################################
-    # Import Database
-	$BlobName = $DatabaseName + ".bacpac"
-    $BlobUri = BlobContainerUri + $BlobName
-	$NewDatabaseName = $DatabaseNamePrefix + "2"
+	#Test the first parameter set
+    $BlobName = $DatabaseName1 + ".bacpac"
+	Write-Output "Exporting to Blob:  $BlobName"
 
-    $requestId = Import-AzureSqlDatabase -UserName $UserName -Password $Password -ServerName `
-        $server.ServerName -DatabaseName $NewDatabaseName -Edition Web -MaxSizeGb 1 -BlobUri $BlobUri `
-		-StorageKey $StorageAccessKey
+	$Request = Start-AzureSqlDatabaseExport -SqlConnectionContext $context -StorageContainer $container `
+		-DatabaseName $DatabaseName1 -BlobName $BlobName
+    Assert {$Request} "Failed to initiate the first export opertaion"
+	$id = ($Request.RequestGuid)
+    Write-Output "Request Id for export1: $id"
 
-    Assert {$requestId} "Failed to initiate the import opertaion"
-    Write-Output "Request Id for import: " + $requestId
-	
+	# Test the second parameter set
+    $BlobName2 = $DatabaseName2 + ".bacpac"
+	Write-Output "Exporting to Blob: $BlobName2"
+
+	$Request2 = Start-AzureSqlDatabaseExport -SqlConnectionContext $context -StorageContext $StgCtx `
+		-StorageContainerName $ContainerName -DatabaseName $DatabaseName2 -BlobName $BlobName2
+    Assert {$Request2} "Failed to initiate the second export opertaion"
+	$id = ($Request2.RequestGuid)
+    Write-Output "Request Id for export2: $id"
+
     $IsTestPass = $True
 }
 Finally
 {
     if($database)
     {
-        # Drop Database
-        Drop-Databases $Context $DatabaseNamePrefix
-        Drop-Server $server
-        $Container = $BlobContainerUri.Segments[-1].Trim('/')
-        Write-Output "Container: " + $Container
-        
-        #Remove-AzureStorageBlob -Blob $BlobUri
+        if($server)
+        {
+			Drop-Server $server
+		}
+		
+		if($StgCtx)
+		{
+			if($BlobName)
+			{
+				Remove-AzureStorageBlob -Container $ContainerName -Blob $BlobName -Context $StgCtx
+			}
+			if($BlobName2)
+			{
+				Remove-AzureStorageBlob -Container $ContainerName -Blob $BlobName2 -Context $StgCtx
+			}
+		}
     }
 }
 

@@ -112,6 +112,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Microsoft.WindowsAzure.ServiceManagement.Client.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WindowsAzure.Storage.2.0.5.1\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
@@ -132,7 +136,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="MSSharedLibKey.snk" />
-    <Compile Include="Database\Cmdlet\ExportAzureSqlDatabase.cs" />
+    <Compile Include="Database\Cmdlet\StartAzureSqlDatabaseExport.cs" />
     <Compile Include="Database\Cmdlet\ImportAzureSqlDatabase.cs" />
     <Compile Include="Firewall\Cmdlet\SetAzureSqlDatabaseServerFirewallRule.cs" />
     <Compile Include="Firewall\Cmdlet\GetAzureSqlDatabaseServerFirewallRule.cs" />
@@ -173,6 +177,7 @@
     <Compile Include="Services\ImportExport\ConnectionInfo.cs" />
     <Compile Include="Services\ImportExport\ExportInput.cs" />
     <Compile Include="Services\ImportExport\ImportInput.cs" />
+    <Compile Include="Services\ImportExport\ImportExportRequest.cs" />
     <Compile Include="Services\ImportExport\StatusInfo.cs" />
     <Compile Include="Services\Server\DatabaseExtensions.cs" />
     <Compile Include="Services\Server\IServerDataServiceContext.cs" />
@@ -201,6 +206,10 @@
     <None Include="Services\Server\UpdateServerDataServiceMetadata.ps1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Management.Storage\Management.Storage.csproj">
+      <Project>{08cf7da7-0392-4a19-b79b-e1ff67cdb81a}</Project>
+      <Name>Management.Storage</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Management.Utilities\Management.Utilities.csproj">
       <Project>{4900ec4e-8deb-4412-9108-0bc52f81d457}</Project>
       <Name>Management.Utilities</Name>
