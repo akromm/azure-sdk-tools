@@ -543,6 +543,62 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services.Server
 
         #endregion
 
+        /// <summary>
+        /// Gets a quota for a server
+        /// </summary>
+        /// <param name="quotaName"></param>
+        /// <returns></returns>
+        public ServerQuota GetQuota(string quotaName)
+        {
+            ServerQuota quota;
+
+            MergeOption tempOption = this.MergeOption;
+            this.MergeOption = MergeOption.OverwriteChanges;
+
+            try
+            {
+                // Find the database by name
+                quota = this.ServerQuotas.Where(q => q.Name == quotaName).SingleOrDefault();
+                if (quota == null)
+                {
+                    throw new InvalidOperationException(
+                        string.Format(
+                            CultureInfo.InvariantCulture,
+                            Resources.DatabaseNotFound,
+                            this.ServerName,
+                            quotaName));
+                }
+            }
+            finally
+            {
+                this.MergeOption = tempOption;
+            }
+
+            return quota;
+        }
+
+        /// <summary>
+        /// Retrieves an array of all the server quotas.
+        /// </summary>
+        /// <returns>An array of <see cref="ServerQuota"/> objects</returns>
+        public ServerQuota[] GetQuotas()
+        {
+            MergeOption tempOption = this.MergeOption;
+            this.MergeOption = MergeOption.OverwriteChanges;
+            ServerQuota[] allQuotas = null;
+
+            try
+            {
+                allQuotas = this.ServerQuotas.ToArray();
+            }
+            finally
+            {
+                this.MergeOption = tempOption;
+            }
+
+            return allQuotas;
+        }
+
         #endregion
 
         /// <summary>

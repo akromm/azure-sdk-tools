@@ -292,8 +292,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests
         }
 
         #endregion
-     
+
         #endregion
     }
 }
-

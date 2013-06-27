@@ -143,6 +143,7 @@
     <None Include="TestScripts\Server\CreateGetDropFirewall.ps1" />
     <None Include="TestScripts\Database\CreateAndGetDatabase.ps1" />
     <None Include="TestScripts\Server\FormatValidation.ps1" />
+    <None Include="TestScripts\Server\GetServerQuota.ps1" />
     <None Include="TestScripts\Server\ResetPassword.ps1" />
   </ItemGroup>
   <ItemGroup>
