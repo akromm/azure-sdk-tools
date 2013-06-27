@@ -54,7 +54,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
         {
             Server server = new Server();
             
-            // Obtain the database name from the given parameters.
+            // Obtain the quota name from the given parameters.
             string quotaName = null;
             if (this.MyInvocation.BoundParameters.ContainsKey("QuotaName"))
             {
@@ -65,12 +65,12 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
             {
                 if (!string.IsNullOrEmpty(quotaName))
                 {
-                    // Retrieve the database with the specified name
+                    // Retrieve the quota with the specified name
                     this.WriteObject(this.ConnectionContext.GetQuota(quotaName));
                 }
                 else
                 {
-                    // No name specified, retrieve all databases in the server
+                    // No name specified, retrieve all quotas in the server
                     this.WriteObject(this.ConnectionContext.GetQuotas(), true);
                 }
             }

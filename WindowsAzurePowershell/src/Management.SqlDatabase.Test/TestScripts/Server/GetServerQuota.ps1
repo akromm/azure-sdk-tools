@@ -30,15 +30,15 @@ Param
     [ValidateNotNullOrEmpty()]
     [String]
     $serverLocation,
-	[Parameter(Mandatory=$true, Position=4)]
+    [Parameter(Mandatory=$true, Position=4)]
     [ValidateNotNullOrEmpty()]
     [String]
     $Endpoint,
-	[Parameter(Mandatory=$true, Position=5)]
+    [Parameter(Mandatory=$true, Position=5)]
     [ValidateNotNullOrEmpty()]
     [String]
     $Username,
-	[Parameter(Mandatory=$true, Position=6)]
+    [Parameter(Mandatory=$true, Position=6)]
     [ValidateNotNullOrEmpty()]
     [String]
     $Password
@@ -54,17 +54,24 @@ Write-Output "`$serverLocation=$serverLocation"
 
 Try
 {
-	Init-TestEnvironment
-	Init-AzureSubscription $SubscriptionId $SerializedCert $Endpoint
+    Init-TestEnvironment
+    Init-AzureSubscription $SubscriptionId $SerializedCert $Endpoint
 	
     $securePassword = ConvertTo-SecureString $Password -AsPlainText -Force
     $credential = New-Object System.Management.Automation.PSCredential ($UserName, $securePassword)
     
     $context = New-AzureSqlDatabaseServerContext -ManageUrl $SloManageUrl -Credential $credential
     
-	$quota = $context | Get-AzureSqlDatabaseServerQuota
-	Assert {$quota} "Failed to get the quotas from the server"
-	Write-Output $quota
+    Write-Output "Testing: Get all quotas"
+    $quota = $context | Get-AzureSqlDatabaseServerQuota
+    Assert {$quota} "Failed to get the quotas from the server"
+    Write-Output $quota
+
+    
+    Write-Output "\nTesting: Get Premium_Databases quota"
+    $quota = $context | Get-AzureSqlDatabaseServerQuota -QuotaName "Premium_Databases"
+    Assert {$quota.Name -eq "Premium_Databases"} "Failed to get the quotas from the server"
+    Write-Output $quota
 
     $isTestPass = $True
 }

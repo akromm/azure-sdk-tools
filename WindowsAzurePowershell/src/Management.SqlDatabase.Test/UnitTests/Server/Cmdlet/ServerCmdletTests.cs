@@ -14,9 +14,14 @@
 
 namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cmdlet
 {
+    using System;
+    using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Management.Automation;
     using System.ServiceModel;
     using System.Xml;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Database.Cmdlet;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.MockServer;
     using Microsoft.WindowsAzure.Management.Test.Utilities.Common;
     using Microsoft.WindowsAzure.Management.Utilities.Common;
     using Services;
@@ -261,6 +266,82 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
             Assert.AreEqual("NewPassword", password);
 
             Assert.AreEqual(0, commandRuntime.ErrorStream.Count);
+        }
+
+        [TestMethod]
+        public void GetAzureSqlDatabaseServerQuotaTest()
+        {
+            using (System.Management.Automation.PowerShell powershell =
+                System.Management.Automation.PowerShell.Create())
+            {
+                // Create a context
+                NewAzureSqlDatabaseServerContextTests.CreateServerContextSqlAuth(
+                    powershell,
+                    "$context");
+
+                // Issue another create testdb1, causing a failure
+                HttpSession testSession = DatabaseTestHelper.DefaultSessionCollection.GetSession(
+                    "UnitTest.GetAzureSqlDatabaseServerQuotaProcessTest");
+
+                DatabaseTestHelper.SetDefaultTestSessionSettings(testSession);
+
+                testSession.RequestValidator =
+                    new Action<HttpMessage, HttpMessage.Request>(
+                    (expected, actual) =>
+                    {
+                        Assert.AreEqual(expected.RequestInfo.Method, actual.Method);
+                        Assert.AreEqual(expected.RequestInfo.UserAgent, actual.UserAgent);
+                        //switch (expected.Index)
+                        //{
+                        //    // Request 0-1: Create testdb1
+                        //    case 0:
+                        //    case 1:
+                        //        DatabaseTestHelper.ValidateHeadersForODataRequest(
+                        //            expected.RequestInfo,
+                        //            actual);
+                        //        break;
+                        //    default:
+                        //        Assert.Fail("No more requests expected.");
+                        //        break;
+                        //}
+                    });
+
+                using (AsyncExceptionManager exceptionManager = new AsyncExceptionManager())
+                {
+                    Services.Server.ServerDataServiceSqlAuth context;
+                    using (new MockHttpServer(
+                        exceptionManager,
+                        MockHttpServer.DefaultServerPrefixUri,
+                        testSession))
+                    {
+                        Collection<PSObject> ctxPsObject = powershell.InvokeBatchScript("$context");
+
+                        context =
+                            (Services.Server.ServerDataServiceSqlAuth)ctxPsObject.First().BaseObject;
+
+                        Collection<PSObject> quota1, quota2;
+                        quota1 = powershell.InvokeBatchScript(
+                            @"$context | Get-AzureSqlDatabaseServerQuota");
+
+                        quota2 = powershell.InvokeBatchScript(
+                            @"$context | Get-AzureSqlDatabaseServerQuota -QuotaName ""Premium_Databases""");
+                    }
+                }
+
+                //Assert.AreEqual(1, powershell.Streams.Error.Count, "Expecting errors");
+                //Assert.AreEqual(2, powershell.Streams.Warning.Count, "Expecting tracing IDs");
+                //Assert.AreEqual(
+                //    "Database 'testdb1' already exists. Choose a different database name.",
+                //    powershell.Streams.Error.First().Exception.Message,
+                //    "Unexpected error message");
+                //Assert.IsTrue(
+                //    powershell.Streams.Warning.Any(w => w.Message.StartsWith("Client Session Id")),
+                //    "Expecting Client Session Id");
+                //Assert.IsTrue(
+                //    powershell.Streams.Warning.Any(w => w.Message.StartsWith("Client Request Id")),
+                //    "Expecting Client Request Id");
+                powershell.Streams.ClearStreams();
+            }
         }
     }
 }
