@@ -546,8 +546,8 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services.Server
         /// <summary>
         /// Gets a quota for a server
         /// </summary>
-        /// <param name="quotaName"></param>
-        /// <returns></returns>
+        /// <param name="quotaName">The name of the quota to retrieve</param>
+        /// <returns>A <see cref="ServerQuota"/> object for the quota</returns>
         public ServerQuota GetQuota(string quotaName)
         {
             ServerQuota quota;

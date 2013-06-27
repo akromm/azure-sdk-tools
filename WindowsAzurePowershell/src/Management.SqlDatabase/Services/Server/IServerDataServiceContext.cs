@@ -99,6 +99,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services.Server
         /// </summary>
         /// <param name="databaseName">The database to remove.</param>
         void RemoveDatabase(string databaseName);
+
         /// <summary>
         /// Get a specific quota for a server
         /// </summary>

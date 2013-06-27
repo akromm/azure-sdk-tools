@@ -14,17 +14,9 @@
 namespace Microsoft.WindowsAzure.Management.SqlDatabase.Server.Cmdlet
 {
     using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
     using System.Management.Automation;
-    using System.ServiceModel;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Services.Common;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Services.Server;
-    using Model;
-    using Properties;
-    using ServiceManagement;
-    using Services;
 
     /// <summary>
     /// Retrieves a list of Windows Azure SQL Database server quotas for the selected server.
