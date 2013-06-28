@@ -20,6 +20,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
     using System.Management.Automation;
     using System.ServiceModel;
     using System.Xml;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Services.Server;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Database.Cmdlet;
     using Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.MockServer;
     using Microsoft.WindowsAzure.Management.Test.Utilities.Common;
@@ -269,7 +270,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
         }
 
         [TestMethod]
-        public void GetAzureSqlDatabaseServerQuotaTest()
+        public void GetAzureSqlDatabaseServerQuotaSqlAuthTest()
         {
             using (System.Management.Automation.PowerShell powershell =
                 System.Management.Automation.PowerShell.Create())
@@ -281,7 +282,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
 
                 // Issue another create testdb1, causing a failure
                 HttpSession testSession = DatabaseTestHelper.DefaultSessionCollection.GetSession(
-                    "UnitTest.GetAzureSqlDatabaseServerQuotaProcessTest");
+                    "UnitTest.GetAzureSqlDatabaseServerQuotaSqlAuthTest");
 
                 DatabaseTestHelper.SetDefaultTestSessionSettings(testSession);
 
@@ -291,19 +292,19 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
                     {
                         Assert.AreEqual(expected.RequestInfo.Method, actual.Method);
                         Assert.AreEqual(expected.RequestInfo.UserAgent, actual.UserAgent);
-                        //switch (expected.Index)
-                        //{
-                        //    // Request 0-1: Create testdb1
-                        //    case 0:
-                        //    case 1:
-                        //        DatabaseTestHelper.ValidateHeadersForODataRequest(
-                        //            expected.RequestInfo,
-                        //            actual);
-                        //        break;
-                        //    default:
-                        //        Assert.Fail("No more requests expected.");
-                        //        break;
-                        //}
+                        switch (expected.Index)
+                        {
+                            // Request 0-1: Create testdb1
+                            case 0:
+                            case 1:
+                                DatabaseTestHelper.ValidateHeadersForODataRequest(
+                                    expected.RequestInfo,
+                                    actual);
+                                break;
+                            default:
+                                Assert.Fail("No more requests expected.");
+                                break;
+                        }
                     });
 
                 using (AsyncExceptionManager exceptionManager = new AsyncExceptionManager())
@@ -319,28 +320,29 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests.Server.Cm
                         context =
                             (Services.Server.ServerDataServiceSqlAuth)ctxPsObject.First().BaseObject;
 
-                        Collection<PSObject> quota1, quota2;
-                        quota1 = powershell.InvokeBatchScript(
+                        Collection<PSObject> q1, q2;
+                        q1 = powershell.InvokeBatchScript(
                             @"$context | Get-AzureSqlDatabaseServerQuota");
 
-                        quota2 = powershell.InvokeBatchScript(
+                        q2 = powershell.InvokeBatchScript(
                             @"$context | Get-AzureSqlDatabaseServerQuota -QuotaName ""Premium_Databases""");
+
+                        ServerQuota quota1 = q1.FirstOrDefault().BaseObject as ServerQuota;
+                        ServerQuota quota2 = q2.FirstOrDefault().BaseObject as ServerQuota;
+
+                        Assert.AreEqual(
+                            "premium_databases",
+                            quota1.Name,
+                            "Unexpected quota name");
+                        Assert.AreEqual(
+                            "premium_databases",
+                            quota2.Name,
+                            "Unexpected quota name");
                     }
                 }
 
-                //Assert.AreEqual(1, powershell.Streams.Error.Count, "Expecting errors");
-                //Assert.AreEqual(2, powershell.Streams.Warning.Count, "Expecting tracing IDs");
-                //Assert.AreEqual(
-                //    "Database 'testdb1' already exists. Choose a different database name.",
-                //    powershell.Streams.Error.First().Exception.Message,
-                //    "Unexpected error message");
-                //Assert.IsTrue(
-                //    powershell.Streams.Warning.Any(w => w.Message.StartsWith("Client Session Id")),
-                //    "Expecting Client Session Id");
-                //Assert.IsTrue(
-                //    powershell.Streams.Warning.Any(w => w.Message.StartsWith("Client Request Id")),
-                //    "Expecting Client Request Id");
-                powershell.Streams.ClearStreams();
+                Assert.AreEqual(0, powershell.Streams.Error.Count, "There were errors while running the tests!");
+                Assert.AreEqual(0, powershell.Streams.Warning.Count, "There were warnings while running the tests!");
             }
         }
     }

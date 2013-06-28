@@ -17,7 +17,6 @@
 
 function Init-TestEnvironment
 {
-    $ConfirmPreference = "Medium"
     $DebugPreference = "Continue"
     $ErrorActionPreference = "Continue"
     $FormatEnumerationLimit = 10000
@@ -26,11 +25,15 @@ function Init-TestEnvironment
     $WarningPreference = "Continue"
     $WhatIfPreference = $false
 
+    # Setting to continue because WA sets a bunch of aliases which ask for 
+    # confirmation when running the functional tests.
+    $ConfirmPreference = "Continue"
     $moduleLoaded = Get-Module -Name "Microsoft.WindowsAzure.Management"
     if(!$moduleLoaded)
     {
         Import-Module .\Microsoft.WindowsAzure.Management.SqlDatabase.Test.psd1
     }
+    $ConfirmPreference = "Medium"
 }
 
 function Init-AzureSubscription
