@@ -71,16 +71,16 @@ function Init-AzureSubscription
     
     $subName = "MySub" + $SubscriptionID
 	
-	if($ServiceEndpoint)
-	{
-		Set-AzureSubscription -SubscriptionName $subName -SubscriptionId $SubscriptionID -Certificate $myCert `
-			-ServiceEndpoint $ServiceEndpoint
-	}
-	else
-	{
-		Set-AzureSubscription -SubscriptionName $subName -SubscriptionId $SubscriptionID -Certificate $myCert `
-			-ServiceEndpoint "https://management.core.windows.net"
-	}
+    if($ServiceEndpoint)
+    {
+	    Set-AzureSubscription -SubscriptionName $subName -SubscriptionId $SubscriptionID -Certificate $myCert `
+		    -ServiceEndpoint $ServiceEndpoint
+    }
+    else
+    {
+	    Set-AzureSubscription -SubscriptionName $subName -SubscriptionId $SubscriptionID -Certificate $myCert `
+		    -ServiceEndpoint "https://management.core.windows.net"
+    }
 	
     Select-AzureSubscription -SubscriptionName $subName
 }

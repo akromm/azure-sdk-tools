@@ -327,17 +327,11 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services.Server
         /// <returns>An array of all databases on the server.</returns>
         public Database[] GetDatabases()
         {
-            MergeOption tempOption = this.MergeOption;
-            this.MergeOption = MergeOption.OverwriteChanges;
             Database[] allDatabases = null;
-
-            try
+            
+            using (new MergeOptionTemporaryChange(this, MergeOption.OverwriteChanges))
             {
                 allDatabases = this.Databases.ToArray();
-            }
-            finally
-            {
-                this.MergeOption = tempOption;
             }
 
             // Load the extra properties for all objects.
@@ -358,10 +352,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services.Server
         {
             Database database;
 
-            MergeOption tempOption = this.MergeOption;
-            this.MergeOption = MergeOption.OverwriteChanges;
-
-            try
+            using (new MergeOptionTemporaryChange(this, MergeOption.OverwriteChanges))
             {
                 // Find the database by name
                 database = this.Databases.Where(db => db.Name == databaseName).SingleOrDefault();
@@ -374,10 +365,6 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services.Server
                             this.ServerName,
                             databaseName));
                 }
-            }
-            finally
-            {
-                this.MergeOption = tempOption;
             }
 
             // Load the extra properties for this object.
@@ -480,15 +467,9 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services.Server
         {
             ServiceObjective[] allObjectives = null;
 
-            MergeOption tempOption = this.MergeOption;
-            this.MergeOption = MergeOption.OverwriteChanges;
-            try
+            using (new MergeOptionTemporaryChange(this, MergeOption.OverwriteChanges))
             {
                 allObjectives = this.ServiceObjectives.ToArray();
-            }
-            finally
-            {
-                this.MergeOption = tempOption;
             }
 
             // Load the extra properties for all objects.
@@ -512,9 +493,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services.Server
         {
             ServiceObjective objective;
 
-            MergeOption tempOption = this.MergeOption;
-            this.MergeOption = MergeOption.OverwriteChanges;
-            try
+            using (new MergeOptionTemporaryChange(this, MergeOption.OverwriteChanges))
             {
                 // Find the service objective by name
                 objective = this.ServiceObjectives
@@ -529,10 +508,6 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services.Server
                             this.ServerName,
                             serviceObjectiveName));
                 }
-            }
-            finally
-            {
-                this.MergeOption = tempOption;
             }
 
             // Load the extra properties for this object.
@@ -552,10 +527,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services.Server
         {
             ServerQuota quota;
 
-            MergeOption tempOption = this.MergeOption;
-            this.MergeOption = MergeOption.OverwriteChanges;
-
-            try
+            using (new MergeOptionTemporaryChange(this, MergeOption.OverwriteChanges))
             {
                 // Find the database by name
                 quota = this.ServerQuotas.Where(q => q.Name == quotaName).SingleOrDefault();
@@ -569,10 +541,6 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services.Server
                             quotaName));
                 }
             }
-            finally
-            {
-                this.MergeOption = tempOption;
-            }
 
             return quota;
         }
@@ -583,17 +551,11 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services.Server
         /// <returns>An array of <see cref="ServerQuota"/> objects</returns>
         public ServerQuota[] GetQuotas()
         {
-            MergeOption tempOption = this.MergeOption;
-            this.MergeOption = MergeOption.OverwriteChanges;
             ServerQuota[] allQuotas = null;
 
-            try
+            using (new MergeOptionTemporaryChange(this, MergeOption.OverwriteChanges))
             {
                 allQuotas = this.ServerQuotas.ToArray();
-            }
-            finally
-            {
-                this.MergeOption = tempOption;
             }
 
             return allQuotas;
