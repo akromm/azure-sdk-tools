@@ -138,6 +138,7 @@
     <None Include="MSSharedLibKey.snk" />
     <Compile Include="Database\Cmdlet\StartAzureSqlDatabaseImport.cs" />
     <Compile Include="Database\Cmdlet\StartAzureSqlDatabaseExport.cs" />
+    <Compile Include="Database\Cmdlet\GetAzureSqlDatabaseImportExportStatus.cs" />
     <Compile Include="Firewall\Cmdlet\SetAzureSqlDatabaseServerFirewallRule.cs" />
     <Compile Include="Firewall\Cmdlet\GetAzureSqlDatabaseServerFirewallRule.cs" />
     <Compile Include="Firewall\Cmdlet\NewAzureSqlDatabaseServerFirewallRule.cs" />
@@ -193,6 +194,7 @@
     <Compile Include="Services\SqlDatabaseFirewallRule.cs" />
     <Compile Include="Services\SqlDatabaseFirewallRuleInput.cs" />
     <Compile Include="Services\SqlDatabaseFirewallRulesList.cs" />
+    <Compile Include="Services\ImportExport\ArrayOfStatusInfo.cs" />
     <Compile Include="Services\SqlDatabaseManagementError.cs" />
     <Compile Include="Services\SqlDatabaseManagementHelper.cs" />
     <Compile Include="Services\SqlDatabaseServer.cs" />

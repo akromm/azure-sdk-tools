@@ -351,6 +351,48 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests
         
         #endregion
 
+        #region Import/Export Database Status
+
+        public Func<SimpleServiceManagementAsyncResult, ArrayOfStatusInfo> GetImportExporStatusThunk { get; set; }
+        public IAsyncResult BeginGetImportExportStatus(
+            string subscriptionId,
+            string serverName,
+            string serverName2, 
+            string userName, 
+            string password, 
+            string requestId, 
+            AsyncCallback callback, 
+            object state)
+        {
+            SimpleServiceManagementAsyncResult result = new SimpleServiceManagementAsyncResult();
+            result.Values["subscriptionId"] = subscriptionId;
+            result.Values["serverName"] = serverName;
+            result.Values["userName"] = userName;
+            result.Values["password"] = password;
+            result.Values["requestId"] = requestId;
+            result.Values["callback"] = callback;
+            result.Values["state"] = state;
+            return result;
+        }
+
+        public ArrayOfStatusInfo EndGetImportExportStatus(IAsyncResult asyncResult)
+        {
+            if (GetImportExporStatusThunk != null)
+            {
+                SimpleServiceManagementAsyncResult result =
+                    asyncResult as SimpleServiceManagementAsyncResult;
+                Assert.IsNotNull(result, "asyncResult was not SimpleServiceManagementAsyncResult!");
+
+                return GetImportExporStatusThunk(result);
+            }
+            else if (ThrowsIfNotImplemented)
+            {
+                throw new NotImplementedException("ExportDatabaseThunk is not implemented!");
+            }
+
+            return default(ArrayOfStatusInfo);
+        }
+
         #region Import Database
 
         public Func<SimpleServiceManagementAsyncResult, XmlElement> ImportDatabaseThunk { get; set; }
@@ -387,6 +429,8 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.UnitTests
 
             return default(XmlElement);
         }
+
+        #endregion
 
         #endregion
 

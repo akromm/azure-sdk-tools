@@ -107,8 +107,12 @@ Try
     
     ####################################################
     # Export Database
-
+	
+	$status = $null
+    
+    ###########
 	#Test the first parameter set
+
     $BlobName = $DatabaseName1 + ".bacpac"
 	Write-Output "Exporting to Blob:  $BlobName"
 
@@ -118,7 +122,17 @@ Try
 	$id = ($Request.RequestGuid)
     Write-Output "Request Id for export1: $id"
 
+	do
+	{
+		Start-Sleep -m 1500
+		$status = Get-AzureSqlDatabaseImportExportStatus $Request
+		$s = $status.Status
+		Write-Output "Request1 Status: $s"
+	} while($status.Status -ne "Completed")
+
+    ###########
 	# Test the second parameter set
+
     $BlobName2 = $DatabaseName2 + ".bacpac"
 	Write-Output "Exporting to Blob: $BlobName2"
 
@@ -128,29 +142,35 @@ Try
 	$id = ($Request2.RequestGuid)
     Write-Output "Request Id for export2: $id"
 
+	do
+	{
+		Start-Sleep -m 1500
+		$status = Get-AzureSqlDatabaseImportExportStatus -RequestId $Request2.RequestGuid `
+            -ServerName $server.ServerName -UserName $UserName -Password $Password
+		$s = $status.Status
+		Write-Output "Request2 Status: $s"
+	} while($status.Status -ne "Completed")
+
     $IsTestPass = $True
 }
 Finally
 {
-    if($database)
-    {
-        if($server)
-        {
-			Drop-Server $server
-		}
+	if($server)
+	{
+		Drop-Server $server
+	}
 		
-		if($StgCtx)
+	if($StgCtx)
+	{
+		if($BlobName)
 		{
-			if($BlobName)
-			{
-				Remove-AzureStorageBlob -Container $ContainerName -Blob $BlobName -Context $StgCtx
-			}
-			if($BlobName2)
-			{
-				Remove-AzureStorageBlob -Container $ContainerName -Blob $BlobName2 -Context $StgCtx
-			}
+			Remove-AzureStorageBlob -Container $ContainerName -Blob $BlobName -Context $StgCtx
 		}
-    }
+		if($BlobName2)
+		{
+			Remove-AzureStorageBlob -Container $ContainerName -Blob $BlobName2 -Context $StgCtx
+		}
+	}
 }
 
 Write-TestResult $IsTestPass
