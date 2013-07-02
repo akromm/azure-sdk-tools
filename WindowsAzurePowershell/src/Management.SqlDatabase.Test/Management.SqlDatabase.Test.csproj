@@ -137,8 +137,10 @@
     </Content>
     <None Include="MSSharedLibKey.snk" />
     <None Include="TestScripts\CommonFunctions.ps1" />
+    <None Include="TestScripts\Database\ImportTests.ps1" />
     <None Include="TestScripts\Database\CreateContext.ps1" />
     <None Include="TestScripts\Database\DeleteDatabase.ps1" />
+    <None Include="TestScripts\Database\ExportTests.ps1" />
     <None Include="TestScripts\Database\FormatValidation.ps1" />
     <None Include="TestScripts\Database\ImportExportDatabase.ps1" />
     <None Include="TestScripts\Database\UpdateDatabase.ps1" />
