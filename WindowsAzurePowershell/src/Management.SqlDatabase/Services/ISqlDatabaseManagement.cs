@@ -18,6 +18,7 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
     using System.ServiceModel;
     using System.ServiceModel.Web;
     using System.Xml;
+    using Microsoft.WindowsAzure.Management.SqlDatabase.Services.ImportExport;
 
     /// <summary>
     /// The Windows Azure SQL Database related part of the external API
@@ -95,5 +96,32 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Services
         IAsyncResult BeginRemoveServerFirewallRule(string subscriptionId, string serverName, string ruleName, AsyncCallback callback, object state);
 
         void EndRemoveServerFirewallRule(IAsyncResult asyncResult);
+
+        /// <summary>
+        /// Initiates exporting a database to blob storage
+        /// </summary>
+        /// <param name="subscriptionId">The subscription id that the server belongs to</param>
+        /// <param name="serverName">The name of the server the database resides in</param>
+        /// <param name="input">An <see cref="ExportInput"/> object containing connection info</param>
+        /// <param name="callback">The async callback object</param>
+        /// <param name="state">the state object</param>
+        /// <returns>An <see cref="IAsyncResult"/> for the web request</returns>
+        [OperationContract(AsyncPattern = true)]
+        [WebInvoke(Method = "POST", 
+            UriTemplate = @"{subscriptionId}/services/sqlservers/servers/{serverName}/DacOperations/Export")]
+        IAsyncResult BeginExportDatabase(
+            string subscriptionId, 
+            string serverName, 
+            ExportInput input, 
+            AsyncCallback callback,
+            object state);
+
+        /// <summary>
+        /// Finishes the web request to export database to blob storage
+        /// </summary>
+        /// <param name="asyncResult">The <see cref="IAsyncResult"/> of the call to: 
+        /// BeginExportDatabase</param>
+        /// <returns>An <see cref="XmlElement"/> that contains the request ID of the operation</returns>
+        XmlElement EndExportDatabase(IAsyncResult asyncResult);
     }
 }

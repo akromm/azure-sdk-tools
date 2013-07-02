@@ -17,7 +17,7 @@
 
 function Init-TestEnvironment
 {
-    $ConfirmPreference = "Medium"
+    #$ConfirmPreference = "Medium"
     $DebugPreference = "Continue"
     $ErrorActionPreference = "Continue"
     $FormatEnumerationLimit = 10000
@@ -29,7 +29,8 @@ function Init-TestEnvironment
     $moduleLoaded = Get-Module -Name "Microsoft.WindowsAzure.Management"
     if(!$moduleLoaded)
     {
-        Import-Module .\Microsoft.WindowsAzure.Management.SqlDatabase.Test.psd1
+        #Import-Module .\Microsoft.WindowsAzure.Management.SqlDatabase.Test.psd1
+		Import-Module .\Azure.psd1
     }
 }
 

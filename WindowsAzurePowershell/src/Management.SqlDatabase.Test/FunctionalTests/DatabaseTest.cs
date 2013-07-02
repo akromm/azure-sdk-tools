@@ -12,7 +12,6 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-
 namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.FunctionalTests
 {
     using System;
@@ -28,12 +27,20 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.FunctionalTests
         private string userName;
         private string password;
         private string manageUrl;
+        private string serverLocation;
+        private string subscriptionId;
+        private string serializedCert;
+        private string containerName;
+        private string storageName;
+        private string accessKey;
+        private string ieServerLocation;
 
         private const string CreateContextScript = @"Database\CreateContext.ps1";
         private const string CreateScript = @"Database\CreateAndGetDatabase.ps1";
         private const string UpdateScript = @"Database\UpdateDatabase.ps1";
         private const string DeleteScript = @"Database\DeleteDatabase.ps1";
         private const string FormatValidationScript = @"Database\FormatValidation.ps1";
+        private const string ImportExportScript = @"Database\ImportExportDatabase.ps1";
 
         [TestInitialize]
         public void Setup()
@@ -42,6 +49,13 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.FunctionalTests
             this.userName = root.Element("SqlAuthUserName").Value;
             this.password = root.Element("SqlAuthPassword").Value;
             this.manageUrl = root.Element("ManageUrl").Value;
+            this.serverLocation = root.Element("ServerLocation").Value;
+            this.subscriptionId = root.Element("SubscriptionId").Value;
+            this.serializedCert = root.Element("SerializedCert").Value;
+            this.containerName = root.Element("ContainerName").Value;
+            this.storageName = root.Element("StorageName").Value;
+            this.accessKey = root.Element("AccessKey").Value;
+            this.ieServerLocation = root.Element("IEServerLocation").Value;
         }
 
         [TestMethod]
@@ -122,6 +136,35 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.FunctionalTests
             Assert.IsTrue(testResult);
 
             OutputFormatValidator.ValidateOutputFormat(outputFile, @"Database\ExpectedFormat.txt");
+        }
+
+        /// <summary>
+        /// Runs the script to test the import and export functionality
+        /// </summary>
+        [TestMethod]
+        [TestCategory("Functional")]
+        public void ImportExportDatabase()
+        {
+            string outputFile = Path.Combine(Directory.GetCurrentDirectory(), Guid.NewGuid() + ".txt");
+
+            string cmdlineArgs =
+                "-UserName \"{0}\" -Password \"{1}\" -SubscriptionId \"{2}\" -SerializedCert \"{3}\" "
+                + "-ContainerName \"{4}\" -StorageName \"{5}\" -StorageAccessKey \"{6}\" "
+                + "-ServerLocation \"{7}\"";
+
+            string arguments = string.Format(
+                CultureInfo.InvariantCulture,
+                cmdlineArgs,
+                this.userName,
+                this.password,
+                this.subscriptionId,
+                this.serializedCert,
+                this.containerName,
+                this.storageName,
+                this.accessKey,
+                this.ieServerLocation);
+            bool testResult = PSScriptExecutor.ExecuteScript(DatabaseTest.ImportExportScript, arguments);
+            Assert.IsTrue(testResult);
         }
     }
 }

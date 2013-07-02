@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SqlDatabaseSetting>
-	<ServerLocation>North Central US</ServerLocation>
-  <ManageUrl>https://ravipalonebx1.dev.mscds.com</ManageUrl>
-  <SqlAuthUserName>mylogin</SqlAuthUserName>
-  <SqlAuthPassword>Sql@zure</SqlAuthPassword>
-</SqlDatabaseSetting>
+	<ServerLocation>Onebox</ServerLocation>
+  <ManageUrl>https://testserver.dev.mscds.com</ManageUrl>
+  <SqlAuthUserName>testuser</SqlAuthUserName>
+  <SqlAuthPassword>testp@ss1</SqlAuthPassword>
+  <IEServerLocation>West US</IEServerLocation>
+  <SubscriptionId>469e47e3-ec58-4fe7-a5d0-44bbba72e540</SubscriptionId>
+  <SerializedCert>AgAAAAEAAAC8AAAAHAAAAGwAAAABAAAAAAAAAAAAAAAAAAAAAQAAAHsANwA0ADEAMAA1ADAARgBGAC0AQgA1AEIAQQAtADQANgA0ADAALQA4AEQARABFAC0ANQBBAEIAMwBEADQAQwAyADQARAA3AEQAfQAAAAAATQBpAGMAcgBvAHMAbwBmAHQAIABTAHQAcgBvAG4AZwAgAEMAcgB5AHAAdABvAGcAcgBhAHAAaABpAGMAIABQAHIAbwB2AGkAZABlAHIAAAAgAAAAAQAAAAwDAAAwggMIMIIB9KADAgECAhDIZ73jCKlsl0khYFWUmUS2MAkGBSsOAwIdBQAwGzEZMBcGA1UEAxMQQXp1cmVJZVRlc3RDZXJ0MjAeFw0xMzA2MTgyMzEwMTVaFw0zOTEyMzEyMzU5NTlaMBsxGTAXBgNVBAMTEEF6dXJlSWVUZXN0Q2VydDIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCzOYmfjTOEvVLm61NMQhsvyeBpKIuKkxrwWWF79+NsXyxuvKi/3Dgp1twgtuPBW7hgIZ8jHiVabmQ6oOVNHLjNDgAy+vW29Rzulb9bS3IfSbU9OJizVzXXUTkqps+IllajAokr14q7+A+g7kO+/rjDA+VqUYrPaWRuLTAAWpQ5gLw0YTTEeSu1/jAj66snrPus48oDXxv6B3lh/yyz8zcuB+FiNwa3ID1iKHysm1C24AuZO/Gkauu/si6Mqqs/7pw1w71OXMQIZWmjUwP/YO0uU2ofuDUd2Cq7T7RWnJPlXL8t1HecSgteOq9ArKvOvPEmLQ7ThqOeFFwkgRVSFe1nAgMBAAGjUDBOMEwGA1UdAQRFMEOAEKidqP59C600QpwOBgy+/eihHTAbMRkwFwYDVQQDExBBenVyZUllVGVzdENlcnQyghDIZ73jCKlsl0khYFWUmUS2MAkGBSsOAwIdBQADggEBACJv2fzVz16+2lN1VtdgdaTUENk+Ad+9ZxxPnLS2kEkjaePBE0vmcwWCC15huUI1V73AE0NrL1c7l9Ja+oOC8f4gGwup78AZdzQ9hc69VzxWpJoPfOm6UV+XkqGLRTUY5zfeRCWYNv8n2N+nlSzuMBB1tIR2VD+OG9PAS6aeTnSzCizYg/7DjJ2GB7L6xCwF7zjqXP48nWdW5qVMpE2B8Sc8kq/W3OKnZ4VnRO2+yiTipYegQF3/mFPc9QNPUkrBm7xbnqC6bJffgnX2+8Q301fCqXSuasW2A8kf8JMUQlSOWRF/vZkc+tmm+OV8iHYO7c1LKAq+4c5ZFNY4Q3y36kM=</SerializedCert>
+  <ContainerName>ietestcontainer</ContainerName>
+  <StorageName>ieteststorage</StorageName>
+  <AccessKey>IslkUIhBOojckGgq6szhkSJiyiDRZ0cPEKGQAbCYdnMzW4Eh0mk9ooBNSZD4i/ylERY1J0FUoJrKKXzfUG54IQ==</AccessKey>
+</SqlDatabaseSetting> 
