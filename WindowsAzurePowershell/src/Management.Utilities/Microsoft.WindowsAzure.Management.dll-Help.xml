@@ -173,23 +173,9 @@
           <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
         </command:parameter>
         <command:parameter required = "false" variableLength = "false" globbing = "false" pipelineInput = "true (ByPropertyName)" position = "named" >
-          <maml:name>StorageBlobEndpointFormat</maml:name>
+          <maml:name>StorageEndpoint</maml:name>
           <maml:description>
-            <maml:para>The blob endpoint format.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
-        </command:parameter>
-        <command:parameter required = "false" variableLength = "false" globbing = "false" pipelineInput = "true (ByPropertyName)" position = "named" >
-          <maml:name>StorageQueueEndpointFormat</maml:name>
-          <maml:description>
-            <maml:para>The queue endpoint format</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
-        </command:parameter>
-        <command:parameter required = "false" variableLength = "false" globbing = "false" pipelineInput = "true (ByPropertyName)" position = "named" >
-          <maml:name>StorageTableEndpointFormat</maml:name>
-          <maml:description>
-            <maml:para>The table endpoint format</maml:para>
+            <maml:para>The storage endpoint. Must be valid URI</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
         </command:parameter>
@@ -225,23 +211,9 @@
           <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
         </command:parameter>
         <command:parameter required = "false" variableLength = "false" globbing = "false" pipelineInput = "true (ByPropertyName)" position = "named" >
-          <maml:name>StorageBlobEndpointFormat</maml:name>
+          <maml:name>StorageEndpoint</maml:name>
           <maml:description>
-            <maml:para>The blob endpoint format.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
-        </command:parameter>
-        <command:parameter required = "false" variableLength = "false" globbing = "false" pipelineInput = "true (ByPropertyName)" position = "named" >
-          <maml:name>StorageQueueEndpointFormat</maml:name>
-          <maml:description>
-            <maml:para>The queue endpoint format</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
-        </command:parameter>
-        <command:parameter required = "false" variableLength = "false" globbing = "false" pipelineInput = "true (ByPropertyName)" position = "named" >
-          <maml:name>StorageTableEndpointFormat</maml:name>
-          <maml:description>
-            <maml:para>The table endpoint format</maml:para>
+            <maml:para>The storage endpoint. Must be valid URI</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
         </command:parameter>
@@ -291,7 +263,7 @@
           <maml:para></maml:para>
         </maml:introduction>
         <dev:code>
-          PS C:\&gt; Add-AzureEnvironment -Name MyEnvironment -PublishSettingsFileUrl "http://microsoft.com" -StorageBlobEndpointFormat "{0}://{1}.blob.core.windows.net/"
+          PS C:\&gt; Add-AzureEnvironment -Name MyEnvironment -PublishSettingsFileUrl "http://microsoft.com" -StorageEndpoint "core.windows.net"
         </dev:code>
         <dev:remarks>
           <maml:para>This example adds a new environment called MyEnvironment.</maml:para>
@@ -360,23 +332,9 @@
           <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
         </command:parameter>
         <command:parameter required = "false" variableLength = "false" globbing = "false" pipelineInput = "true (ByPropertyName)" position = "named" >
-          <maml:name>StorageBlobEndpointFormat</maml:name>
+          <maml:name>StorageEndpoint</maml:name>
           <maml:description>
-            <maml:para>The blob endpoint format.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
-        </command:parameter>
-        <command:parameter required = "false" variableLength = "false" globbing = "false" pipelineInput = "true (ByPropertyName)" position = "named" >
-          <maml:name>StorageQueueEndpointFormat</maml:name>
-          <maml:description>
-            <maml:para>The queue endpoint format</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
-        </command:parameter>
-        <command:parameter required = "false" variableLength = "false" globbing = "false" pipelineInput = "true (ByPropertyName)" position = "named" >
-          <maml:name>StorageTableEndpointFormat</maml:name>
-          <maml:description>
-            <maml:para>The table endpoint format</maml:para>
+            <maml:para>The storage endpoint. Must be valid URI</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
         </command:parameter>
@@ -412,23 +370,113 @@
         <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
       </command:parameter>
       <command:parameter required = "false" variableLength = "false" globbing = "false" pipelineInput = "true (ByPropertyName)" position = "named" >
-        <maml:name>StorageBlobEndpointFormat</maml:name>
+          <maml:name>StorageEndpoint</maml:name>
+          <maml:description>
+            <maml:para>The storage endpoint. Must be valid URI</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
+        </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name></maml:name>
+          <maml:uri></maml:uri>
+          <maml:description>
+            <maml:para />
+          </maml:description>
+        </dev:type>
         <maml:description>
-          <maml:para>The blob endpoint format.</maml:para>
+          <maml:para></maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
-      </command:parameter>
-      <command:parameter required = "false" variableLength = "false" globbing = "false" pipelineInput = "true (ByPropertyName)" position = "named" >
-        <maml:name>StorageQueueEndpointFormat</maml:name>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name></maml:name>
+          <maml:uri></maml:uri>
+          <maml:description>
+            <maml:para />
+          </maml:description>
+        </dev:type>
         <maml:description>
-          <maml:para>The queue endpoint format</maml:para>
+          <maml:para></maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
-      </command:parameter>
+      </command:returnValue>
+    </command:returnValues>
+    <command:terminatingErrors />
+    <command:nonTerminatingErrors />
+    <maml:alertSet>
+      <maml:title></maml:title>
+      <maml:alert>
+        <maml:para>node-dev, php-dev, python-dev</maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>
+          --------------  Example 1 --------------
+        </maml:title>
+        <maml:introduction>
+          <maml:para></maml:para>
+        </maml:introduction>
+        <dev:code>
+          PS C:\&gt; Set-AzureEnvironment -Name MyEnvironment -PublishSettingsFileUrl "http://microsoft.com" -StorageEndpoint "core.windows.net"
+        </dev:code>
+        <dev:remarks>
+          <maml:para>This example Sets an existing environment called MyEnvironment.</maml:para>
+        </dev:remarks>
+        <command:commandLines>
+          <command:commandLine>
+            <command:commandText />
+          </command:commandLine>
+        </command:commandLines>
+      </command:example>
+    </command:examples>
+    <maml:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Get-AzureEnvironment</maml:linkText>
+        <maml:linkText>Add-AzureEnvironment</maml:linkText>
+        <maml:uri />
+      </maml:navigationLink>
+    </maml:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Remove-AzureEnvironment</command:name>
+      <maml:description>
+        <maml:para>Removes Windows Azure environment</maml:para>
+      </maml:description>
+      <maml:copyright>
+        <maml:para />
+      </maml:copyright>
+      <command:verb>Remove</command:verb>
+      <command:noun>AzureEnvironment</command:noun>
+      <dev:version />
+    </command:details>
+    <maml:description>
+      <maml:para>
+        Removes Windows Azure environment
+      </maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Remove-AzureEnvironment</maml:name>
+        <command:parameter required = "false" variableLength = "false" globbing = "false" pipelineInput = "true (ByPropertyName)" position = "named" >
+          <maml:name>Name</maml:name>
+          <maml:description>
+            <maml:para>The environment name</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
       <command:parameter required = "false" variableLength = "false" globbing = "false" pipelineInput = "true (ByPropertyName)" position = "named" >
-        <maml:name>StorageTableEndpointFormat</maml:name>
+        <maml:name>Name</maml:name>
         <maml:description>
-          <maml:para>The table endpoint format</maml:para>
+          <maml:para>The environment name</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
       </command:parameter>
@@ -478,10 +526,10 @@
           <maml:para></maml:para>
         </maml:introduction>
         <dev:code>
-          PS C:\&gt; Set-AzureEnvironment -Name MyEnvironment -PublishSettingsFileUrl "http://microsoft.com" -StorageBlobEndpointFormat "{0}://{1}.blob.core.windows.net/"
+          PS C:\&gt; Remove-AzureEnvironment -Name MyEnvironment
         </dev:code>
         <dev:remarks>
-          <maml:para>This example Sets an existing environment called MyEnvironment.</maml:para>
+          <maml:para>This example removes an environment called MyEnvironment</maml:para>
         </dev:remarks>
         <command:commandLines>
           <command:commandLine>
@@ -492,7 +540,6 @@
     </command:examples>
     <maml:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>Get-AzureEnvironment</maml:linkText>
         <maml:linkText>Add-AzureEnvironment</maml:linkText>
         <maml:uri />
       </maml:navigationLink>
@@ -3658,13 +3705,6 @@
       <command:syntaxItem>
         <maml:name>Publish-AzureServiceProject</maml:name>
         <command:parameter required = "false" variableLength = "false" globbing = "false" pipelineInput = "false" position = "named" >
-          <maml:name>Subscription</maml:name>
-          <maml:description>
-            <maml:para>The Windows Azure subscription name to be used while deploying this service. If no Subscription parameter is specified, the value will be taken from the last Set-AzureServiceProject command issued for this service, or, if no subscription was ever specified, it will default to the first subscription listed in the current windows Azure publish profile.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
-        </command:parameter>
-        <command:parameter required = "false" variableLength = "false" globbing = "false" pipelineInput = "false" position = "named" >
           <maml:name>ServiceName</maml:name>
           <maml:description>
             <maml:para>The name to be used for the service when publishing to the cloud. The name determines the subdomain label in the cloudapp.net subdomain that will be used to address the service when hosted in Azure (that is, &lt;Name&gt;.cloudapp.net). Any name specified while publishing the service will override the name given when creating the service (see the New-AzureServiceProject commandlet).</maml:para>
@@ -3699,33 +3739,22 @@
           </maml:description>
         </command:parameter>
         <command:parameter required = "false" variableLength = "false" globbing = "false" pipelineInput = "false" position = "named" >
-          <maml:name>TimeoutSeconds</maml:name>
+          <maml:name>AffinityGroup</maml:name>
           <maml:description>
-            <maml:para>The timeout in seconds for service deployment operations</maml:para>
+            <maml:para>The affinity group name</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength = "false" >Int32</command:parameterValue>
+          <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
         </command:parameter>
         <command:parameter required = "false" variableLength = "false" globbing = "false" pipelineInput = "false" position = "named" >
-          <maml:name>Force</maml:name>
+          <maml:name>DeploymentName</maml:name>
           <maml:description>
-            <maml:para>Publish service without confirmation prompts</maml:para>
+            <maml:para>The deployment name</maml:para>
           </maml:description>
+          <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
         </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-        <maml:name>Subscription</maml:name>
-        <maml:description>
-          <maml:para>The Windows Azure subscription name to be used while deploying this service. If no Subscription parameter is specified, the value will be taken from the last Set-AzureServiceProject command issued for this service, or, if no subscription was ever specified, it will default to the first subscription listed in the current windows Azure publish profile.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri/>
-        </dev:type>
-        <dev:defaultValue>value taken from current service settings or the current publish profile</dev:defaultValue>
-      </command:parameter>
       <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
         <maml:name>ServiceName</maml:name>
         <maml:description>
@@ -3785,28 +3814,19 @@
         </dev:type>
         <dev:defaultValue>Off</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-        <maml:name>TimeoutSeconds</maml:name>
+      <command:parameter required = "false" variableLength = "false" globbing = "false" pipelineInput = "false" position = "named" >
+        <maml:name>AffinityGroup</maml:name>
         <maml:description>
-          <maml:para>The timeout in seconds for service deployment operations</maml:para>
+          <maml:para>The affinity group name</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri/>
-        </dev:type>
-        <dev:defaultValue></dev:defaultValue>
+        <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-        <maml:name>Force</maml:name>
+      <command:parameter required = "false" variableLength = "false" globbing = "false" pipelineInput = "false" position = "named" >
+        <maml:name>DeploymentName</maml:name>
         <maml:description>
-          <maml:para>Publish service without confirmation prompts</maml:para>
+          <maml:para>The deployment name</maml:para>
         </maml:description>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri/>
-        </dev:type>
-        <dev:defaultValue></dev:defaultValue>
+        <command:parameterValue required="true" variableLength = "false" >String</command:parameterValue>
       </command:parameter>
     </command:parameters>
     <command:inputTypes>

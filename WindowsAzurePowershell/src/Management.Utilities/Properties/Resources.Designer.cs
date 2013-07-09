@@ -602,6 +602,15 @@ namespace Microsoft.WindowsAzure.Management.Utilities.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Changing/Removing public environment &apos;{0}&apos; is not allowed..
+        /// </summary>
+        internal static string ChangePublicEnvironmentMessage {
+            get {
+                return ResourceManager.GetString("ChangePublicEnvironmentMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Service {0} is set to value {1}.
         /// </summary>
         internal static string ChangeSettingsElementMessage {
@@ -697,6 +706,15 @@ namespace Microsoft.WindowsAzure.Management.Utilities.Properties {
         internal static string ConfigurationFileName {
             get {
                 return ResourceManager.GetString("ConfigurationFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating the website failed. If this is the first website for this subscription, please create it using the management portal instead..
+        /// </summary>
+        internal static string CreateWebsiteFailed {
+            get {
+                return ResourceManager.GetString("CreateWebsiteFailed", resourceCulture);
             }
         }
         
@@ -1733,7 +1751,7 @@ namespace Microsoft.WindowsAzure.Management.Utilities.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://az413943.vo.msecnd.net/node/runtimemanifest_v3.xml.
+        ///   Looks up a localized string similar to http://az413943.vo.msecnd.net/node/runtimemanifest_vtest.xml.
         /// </summary>
         internal static string ManifestUri {
             get {
@@ -1751,7 +1769,7 @@ namespace Microsoft.WindowsAzure.Management.Utilities.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to v1.8.
+        ///   Looks up a localized string similar to v2.0.
         /// </summary>
         internal static string MaxSupportAzureSdkVersion {
             get {
@@ -1778,7 +1796,7 @@ namespace Microsoft.WindowsAzure.Management.Utilities.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to v1.8.
+        ///   Looks up a localized string similar to v2.0.
         /// </summary>
         internal static string MinSupportAzureSdkVersion {
             get {
