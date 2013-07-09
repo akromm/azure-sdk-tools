@@ -32,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -65,6 +66,7 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisRuleDirectories>;$(ProgramFiles)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
@@ -139,6 +141,7 @@
     <Compile Include="Database\Cmdlet\StartAzureSqlDatabaseImport.cs" />
     <Compile Include="Database\Cmdlet\StartAzureSqlDatabaseExport.cs" />
     <Compile Include="Database\Cmdlet\GetAzureSqlDatabaseImportExportStatus.cs" />
+    <Compile Include="Database\Cmdlet\GetAzureSqlDatabaseServiceObjective.cs" />
     <Compile Include="Firewall\Cmdlet\SetAzureSqlDatabaseServerFirewallRule.cs" />
     <Compile Include="Firewall\Cmdlet\GetAzureSqlDatabaseServerFirewallRule.cs" />
     <Compile Include="Firewall\Cmdlet\NewAzureSqlDatabaseServerFirewallRule.cs" />
@@ -154,6 +157,7 @@
     <Compile Include="Database\Cmdlet\GetAzureSqlDatabase.cs" />
     <Compile Include="Server\Cmdlet\GetAzureSqlDatabaseServer.cs" />
     <Compile Include="Database\Cmdlet\NewAzureSqlDatabase.cs" />
+    <Compile Include="Server\Cmdlet\GetAzureSqlDatabaseServerQuota.cs" />
     <Compile Include="Server\Cmdlet\NewAzureSqlDatabaseServer.cs" />
     <Compile Include="Database\Cmdlet\NewAzureSqlDatabaseServerContext.cs" />
     <Compile Include="Server\Cmdlet\RemoveAzureSqlDatabaseServer.cs" />
@@ -171,7 +175,9 @@
     <Compile Include="Services\Common\DataServiceConstants.cs" />
     <Compile Include="Services\Common\SqlDatabaseExceptionHandler.cs" />
     <Compile Include="Services\Common\ManagementServiceExceptionInfo.cs" />
-    <Compile Include="Services\ConfigurationConstants.cs" />
+    <Compile Include="Services\ConfigurationConstants.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Services\Constants.cs" />
     <Compile Include="Services\ImportExport\BlobCredentials.cs" />
     <Compile Include="Services\ImportExport\BlobStorageAccessKeyCredentials.cs" />
@@ -180,9 +186,14 @@
     <Compile Include="Services\ImportExport\ImportInput.cs" />
     <Compile Include="Services\ImportExport\ImportExportRequest.cs" />
     <Compile Include="Services\ImportExport\StatusInfo.cs" />
+    <Compile Include="Services\ServerQuotaListResponse.cs" />
+    <Compile Include="Services\ServerQuotaResponse.cs" />
+    <Compile Include="Services\Server\MergeOptionTemporaryChange.cs" />
+    <Compile Include="Services\Server\ServiceObjectiveExtensions.cs" />
     <Compile Include="Services\Server\DatabaseExtensions.cs" />
     <Compile Include="Services\Server\IServerDataServiceContext.cs" />
     <Compile Include="Services\Server\ServerDataService.cs" />
+    <Compile Include="Services\Server\ServerDataServiceCertAuth.cs" />
     <Compile Include="Services\Server\ServerDataServiceEnums.cs" />
     <Compile Include="Services\Server\ServerDataServiceSqlAuth.cs" />
     <Compile Include="Services\Server\ServerContextInternal.cs" />
@@ -195,8 +206,11 @@
     <Compile Include="Services\SqlDatabaseFirewallRuleInput.cs" />
     <Compile Include="Services\SqlDatabaseFirewallRulesList.cs" />
     <Compile Include="Services\ImportExport\ArrayOfStatusInfo.cs" />
+    <Compile Include="Services\SqlDatabaseInput.cs" />
+    <Compile Include="Services\SqlDatabaseList.cs" />
     <Compile Include="Services\SqlDatabaseManagementError.cs" />
     <Compile Include="Services\SqlDatabaseManagementHelper.cs" />
+    <Compile Include="Services\SqlDatabaseResponse.cs" />
     <Compile Include="Services\SqlDatabaseServer.cs" />
     <Compile Include="Services\SqlDatabaseServerExtensions.cs" />
     <Compile Include="Services\SqlDatabaseServerList.cs" />
@@ -230,6 +244,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
