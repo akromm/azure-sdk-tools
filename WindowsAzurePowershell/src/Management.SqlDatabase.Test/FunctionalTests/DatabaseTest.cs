@@ -55,6 +55,11 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.FunctionalTests
         /// </summary>
         private const string FormatValidationScript = @"Database\FormatValidation.ps1";
 
+        /// <summary>
+        /// Script for testing the import and export functionality
+        /// </summary>
+        private const string ImportExportScript = @"Database\ImportExportDatabase.ps1";
+
         #endregion
 
         /// <summary>
@@ -63,6 +68,36 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.FunctionalTests
         private const string LocalRdfeEndpoint = @"https://management.dev.mscds.com:12346/MockRDFE/";
 
         #region Private Fields
+
+        /// <summary>
+        /// The location of the server
+        /// </summary>
+        private string serverLocation;
+
+        /// <summary>
+        /// The name of the storage container to use for IE tests
+        /// </summary>
+        private string containerName;
+
+        /// <summary>
+        /// the name of the storage to user for IE tests
+        /// </summary>
+        private string storageName;
+
+        /// <summary>
+        /// The primary access key for the blob storage for the IE tests
+        /// </summary>
+        private string accessKey;
+
+        /// <summary>
+        /// The server location for the IE tests
+        /// </summary>
+        private string ieServerLocation;
+
+        /// <summary>
+        /// The subscription ID for the IE tests
+        /// </summary>
+        private string ieSubscriptionId;
 
         /// <summary>
         /// Username to use for running the tests
@@ -103,11 +138,21 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.FunctionalTests
         public void Setup()
         {
             XElement root = XElement.Load("SqlDatabaseSettings.xml");
+            this.serverLocation = root.Element("ServerLocation").Value;
             this.userName = root.Element("SqlAuthUserName").Value;
             this.password = root.Element("SqlAuthPassword").Value;
             this.manageUrl = root.Element("ManageUrl").Value;
-            this.subscriptionId = root.Element("SubscriptionID").Value;
             this.serializedCert = root.Element("SerializedCert").Value;
+            this.subscriptionId = root.Element("SubscriptionId").Value;
+
+            // Import Export parameters
+            XElement importExport = root.Element("ImportExport"); 
+            this.ieServerLocation = importExport.Element("ServerLocation").Value;
+            this.ieSubscriptionId = importExport.Element("SubscriptionId").Value;
+            this.containerName = importExport.Element("ContainerName").Value;
+            this.storageName = importExport.Element("StorageName").Value;
+            this.accessKey = importExport.Element("AccessKey").Value;
+
             this.serverName = new Uri(manageUrl).Host.Split('.').First();
         }
 
@@ -225,6 +270,35 @@ namespace Microsoft.WindowsAzure.Management.SqlDatabase.Test.FunctionalTests
             Assert.IsTrue(testResult);
 
             OutputFormatValidator.ValidateOutputFormat(outputFile, @"Database\ExpectedFormat.txt");
+        }
+
+        /// <summary>
+        /// Runs the script to test the import and export functionality
+        /// </summary>
+        [TestMethod]
+        [TestCategory("Functional")]
+        public void ImportExportDatabase()
+        {
+            string outputFile = Path.Combine(Directory.GetCurrentDirectory(), Guid.NewGuid() + ".txt");
+
+            string cmdlineArgs =
+                "-UserName \"{0}\" -Password \"{1}\" -SubscriptionId \"{2}\" -SerializedCert \"{3}\" "
+                + "-ContainerName \"{4}\" -StorageName \"{5}\" -StorageAccessKey \"{6}\" "
+                + "-ServerLocation \"{7}\"";
+
+            string arguments = string.Format(
+                CultureInfo.InvariantCulture,
+                cmdlineArgs,
+                this.userName,
+                this.password,
+                this.ieSubscriptionId,
+                this.serializedCert,
+                this.containerName,
+                this.storageName,
+                this.accessKey,
+                this.ieServerLocation);
+            bool testResult = PSScriptExecutor.ExecuteScript(DatabaseTest.ImportExportScript, arguments);
+            Assert.IsTrue(testResult);
         }
     }
 }

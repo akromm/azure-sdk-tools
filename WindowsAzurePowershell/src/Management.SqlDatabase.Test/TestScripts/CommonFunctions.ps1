@@ -31,7 +31,7 @@ function Init-TestEnvironment
     $moduleLoaded = Get-Module -Name "Microsoft.WindowsAzure.Management"
     if(!$moduleLoaded)
     {
-        Import-Module .\Microsoft.WindowsAzure.Management.SqlDatabase.Test.psd1
+        Import-Module .\Azure.psd1
     }
     $ConfirmPreference = "Medium"
 }
@@ -68,12 +68,12 @@ function Init-AzureSubscription
     $store.Open($OpenFlags::ReadWrite)
     if($store.Certificates.Contains($myCert) -ne $true)
     {
-    $store.Add($myCert)
+        $store.Add($myCert)
     }
     $store.Close()
     
     $subName = "MySub" + $SubscriptionID
-	
+
     if($ServiceEndpoint)
     {
         Set-AzureSubscription -SubscriptionName $subName -SubscriptionId $SubscriptionID -Certificate $myCert `
@@ -84,7 +84,7 @@ function Init-AzureSubscription
         Set-AzureSubscription -SubscriptionName $subName -SubscriptionId $SubscriptionID -Certificate $myCert `
             -ServiceEndpoint "https://management.core.windows.net"
     }
-	
+
     Select-AzureSubscription -SubscriptionName $subName
 }
 
