@@ -31,7 +31,7 @@ function Init-TestEnvironment
     $moduleLoaded = Get-Module -Name "Microsoft.WindowsAzure.Management"
     if(!$moduleLoaded)
     {
-        Import-Module .\Microsoft.WindowsAzure.Management.SqlDatabase.Test.psd1
+        Import-Module .\Azure.psd1
     }
     $ConfirmPreference = "Medium"
 }
@@ -73,7 +73,7 @@ function Init-AzureSubscription
     $store.Close()
     
     $subName = "MySub" + $SubscriptionID
-	
+
     if($ServiceEndpoint)
     {
         Set-AzureSubscription -SubscriptionName $subName -SubscriptionId $SubscriptionID -Certificate $myCert `
@@ -84,7 +84,7 @@ function Init-AzureSubscription
         Set-AzureSubscription -SubscriptionName $subName -SubscriptionId $SubscriptionID -Certificate $myCert `
             -ServiceEndpoint "https://management.core.windows.net"
     }
-	
+
     Select-AzureSubscription -SubscriptionName $subName
 }
 
@@ -408,11 +408,11 @@ function Drop-Databases
         $NameStartsWith
     )
 
-    # Drop Database
-    Write-Output "Dropping databases with name starts with $NameStartsWith ..."
-    Get-AzureSqlDatabase $context | Where-Object {$_.Name.StartsWith($NameStartsWith)} `
-        | Remove-AzureSqlDatabase -Context $context -Force
-    Write-Output "Dropped database with name starts with $NameStartsWith"
+        # Drop Database
+        Write-Output "Dropping databases with name starts with $NameStartsWith ..."
+        Get-AzureSqlDatabase $context | Where-Object {$_.Name.StartsWith($NameStartsWith)} `
+                    | Remove-AzureSqlDatabase -Context $context -Force
+        Write-Output "Dropped database with name starts with $NameStartsWith"
 }
 
 function Drop-DatabasesWithServerName
