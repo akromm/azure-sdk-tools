@@ -14,6 +14,7 @@
 
 namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Server.Cmdlet
 {
+    using Microsoft.WindowsAzure.Common.Internals;
     using Microsoft.WindowsAzure.Management.Sql;
     using Microsoft.WindowsAzure.Management.Sql.Models;
     using Model;
@@ -101,6 +102,11 @@ namespace Microsoft.WindowsAzure.Commands.SqlDatabase.Server.Cmdlet
 
             // Get the SQL management client for the current subscription
             SqlManagementClient sqlManagementClient = GetCurrentSqlClient();
+
+            // Set the retry policty to not retry attempts.
+            CloudExtensions.SetRetryPolicy<SqlManagementClient>(
+                sqlManagementClient, 
+                new WindowsAzure.Common.TransientFaultHandling.RetryPolicy(new WindowsAzure.Common.TransientFaultHandling.DefaultHttpErrorDetectionStrategy(), 0));
 
             // Issue the create server request
             ServerCreateResponse response = sqlManagementClient.Servers.Create(
